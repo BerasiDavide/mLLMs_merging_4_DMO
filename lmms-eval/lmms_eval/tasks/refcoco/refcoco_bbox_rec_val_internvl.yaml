@@ -1,0 +1,3 @@
+task: refcoco_bbox_rec_val_internvl
+test_split: val
+include: _internvl_template_bbox_rec_yaml

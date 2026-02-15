@@ -1,0 +1,15 @@
+{
+    "vg_86k": 1257,
+    "refcocog_25k": 1256,
+    "refcoco_17k": 1256,
+    "refcoco+_17k": 1256,
+    "synthdog_modified_500k": 931,
+    "ocr_vqa_80k": 931,
+    "docvqa_39k": 931,
+    "textvqa_22k": 931,
+    "textcaps_22k": 931,
+    "llavar_20k": 930,
+    "st_vqa_17k": 930,
+    "rendered_text_10k": 930,
+    "infographic_vqa_2k": 930
+}

@@ -1,0 +1,11 @@
+### model
+model_name_or_path: ../checkpoints/base_models/Qwen2-VL-7B-Instruct
+#adapter_name_or_path: xxx
+template: qwen2_vl
+trust_remote_code: true
+
+### export
+#export_dir: xxx
+export_size: 5
+export_device: auto  # choices: [cpu, auto]
+export_legacy_format: false

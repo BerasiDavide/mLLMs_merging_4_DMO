@@ -1,0 +1,3 @@
+task: refcoco_bbox_rec_val_qwen
+test_split: val
+include: _qwen_template_bbox_rec_yaml

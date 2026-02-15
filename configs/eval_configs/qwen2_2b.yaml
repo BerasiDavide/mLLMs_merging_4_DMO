@@ -1,0 +1,34 @@
+### model
+model_name_or_path: ../checkpoints/base_models/Qwen2-VL-2B
+#adapter_name_or_path: xxx
+
+image_max_pixels: 518400
+# video_max_pixels: 16384
+trust_remote_code: true
+
+### method
+stage: sft
+do_train: False
+do_eval: true
+#finetuning_type: lora
+
+### dataset
+eval_dataset: xxx
+template: qwen2_vl
+cutoff_len: 4096
+overwrite_cache: false
+preprocessing_num_workers: 16
+dataloader_num_workers: 4
+
+infer_dtype: bfloat16
+
+
+### output
+output_dir: xxx
+overwrite_output_dir: true
+report_to: wandb
+#run_name: test_run
+
+### eval
+eval_on_each_dataset: true
+per_device_eval_batch_size: 4

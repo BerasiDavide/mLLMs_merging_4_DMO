@@ -1,0 +1,2 @@
+model: qwen2_vl
+batch_size: 8

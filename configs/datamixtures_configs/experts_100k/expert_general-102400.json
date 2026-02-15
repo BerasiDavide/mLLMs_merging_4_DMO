@@ -1,0 +1,8 @@
+{
+    "vqav2_444k_train": 21823,
+    "lnqa_302k_train": 21823,
+    "gqa_72k_train": 21823,
+    "aokvqa_17k_train": 16556,
+    "visual7w_14k_train": 13866,
+    "okvqa_9k_train": 8509
+}

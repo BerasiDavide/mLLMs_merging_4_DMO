@@ -1,0 +1,21 @@
+{
+    "vqav2_444k": 838,
+    "lnqa_302k": 838,
+    "gqa_72k": 838,
+    "aokvqa_17k": 837,
+    "visual7w_14k": 837,
+    "okvqa_9k": 837,
+    "vg_86k": 838,
+    "refcocog_25k": 838,
+    "refcoco_17k": 837,
+    "refcoco+_17k": 837,
+    "synthdog_modified_500k": 559,
+    "ocr_vqa_80k": 559,
+    "docvqa_39k": 559,
+    "textvqa_22k": 558,
+    "textcaps_22k": 558,
+    "llavar_20k": 558,
+    "st_vqa_17k": 558,
+    "rendered_text_10k": 558,
+    "infographic_vqa_2k": 558
+}

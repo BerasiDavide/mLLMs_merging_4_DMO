@@ -1,0 +1,6 @@
+{
+    "dvqa_2325k_train": 42453,
+    "chartqa_28k_train": 27799,
+    "chart2text_26k_train": 24679,
+    "vistext_9k_train": 9469
+}

@@ -1,0 +1,11 @@
+{
+    "synthdog_modified_500k_train": 13316,
+    "ocr_vqa_80k_train": 13315,
+    "docvqa_39k_train": 13315,
+    "textvqa_22k_train": 13315,
+    "textcaps_22k_train": 13315,
+    "llavar_20k_train": 13315,
+    "st_vqa_17k_train": 13315,
+    "rendered_text_10k_train": 9500,
+    "infographic_vqa_2k_train": 1694
+}

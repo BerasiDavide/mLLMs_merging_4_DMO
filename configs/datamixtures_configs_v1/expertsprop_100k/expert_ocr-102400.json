@@ -1,0 +1,11 @@
+{
+    "synthdog_modified_500k": 73260,
+    "ocr_vqa_80k": 11722,
+    "docvqa_39k": 5782,
+    "textvqa_22k": 3217,
+    "textcaps_22k": 3216,
+    "llavar_20k": 2901,
+    "st_vqa_17k": 2527,
+    "rendered_text_10k": 1465,
+    "infographic_vqa_2k": 310
+}
