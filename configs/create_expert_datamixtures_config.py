@@ -10,87 +10,37 @@ JSONL_DATA_FOLDER = "LLaMA-Factory/data/jsonl_datasets"
 
 # Define tasks and their corresponding datasets. Dataset names have to be defined in LLaMA-Factory/data/dataset_info.json
 task2datasets = {
-    # "chart": [
-    #     "dvqa_2325k",
-    #     "chartqa_28k",
-    #     "chart2text_26k",
-    #     "vistext_9k"
-    # ],
-    # "counting": [
-    #     "clevr_700k",
-    #     "tallyqa_250k"
-    # ],
-    # "general": [
-    #     "vqav2_444k",
-    #     "lnqa_302k",
-    #     "gqa_72k",
-    #     "aokvqa_17k",
-    #     "visual7w_14k",
-    #     "okvqa_9k"
-    # ],
-    # "generalv2": [
-	#     "allava_laion_500k",
-    #     "vqav2_444k",
-    #     "lnqa_302k",
-    #     "lvis_instruct4v_220k",
-    #     "qalign_200k",
-    #     "gqa_72k",
-    #     "vizwiz_20k",
-    #     "visual7w_14k",
-    # ],
-    # "generalv3": [
-	#     "allava_laion_500k",
-    #     "vqav2_444k",
-    #     "lnqa_302k",
-    #     "lvis_instruct4v_220k",
-    #     "qalign_200k",
-    #     "gqa_72k",
-    #     "vizwiz_20k",
-    #     "visual7w_14k",
-    #     "okvqa_9k"
-    # ],
-    # "grounding": [
-    #     "vg_86k",
-    #     "refcocog_25k",
-    # ],
-    # "groundingInternvl": [
-    #     "vgInternvl_86k",
-    #     "refcocogInternvl_25k",
-    # ],
-    "groundingQwenvlnr": [
-        "vgQwenvlnr_86k",
-        "refcocogQwenvlnr_25k",
+    "chart": [
+        "dvqa_2325k",
+        "chartqa_28k",
+        "chart2text_26k",
+        "vistext_9k"
     ],
-    "groundingInternvlnr": [
-        "vgInternvlnr_86k",
-        "refcocogInternvlnr_25k",
+    "counting": [
+        "clevr_700k",
+        "tallyqa_250k"
     ],
-    # "math": [
-    #     "geo_170k",
-    #     "raven_42k",
-    #     "geomverse_9k",
-    #     "mathvision_3k",
-    #     "intergps_1k"
-    # ],
-    # "mathv2": [
-    #     "tallyqa_250k",
-    #     "geo_170k",
-    #     "raven_42k",
-    #     "geomverse_9k",
-    #     "mathvision_3k",
-    #     "intergps_1k"
-    # ],
-    # "ocr": [
-    #     "synthdog_modified_500k",
-    #     "ocr_vqa_80k",
-    #     "docvqa_39k",
-    #     "textvqa_22k",
-    #     "textcaps_22k",
-    #     "llavar_20k",
-    #     "st_vqa_17k",
-    #     "rendered_text_10k",
-    #     "infographic_vqa_2k"
-    # ],
+    "general": [
+	    "allava_laion_500k",
+        "vqav2_444k",
+        "lnqa_302k",
+        "lvis_instruct4v_220k",
+        "qalign_200k",
+        "gqa_72k",
+        "vizwiz_20k",
+        "visual7w_14k",
+    ],
+    "ocr": [
+        "synthdog_modified_500k",
+        "ocr_vqa_80k",
+        "docvqa_39k",
+        "textvqa_22k",
+        "textcaps_22k",
+        "llavar_20k",
+        "st_vqa_17k",
+        "rendered_text_10k",
+        "infographic_vqa_2k"
+    ],
 }
 
 def make_as_uniform_as_possible(N: list, target_sum: int) -> list:

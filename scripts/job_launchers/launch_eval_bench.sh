@@ -64,18 +64,17 @@ fi
 submit_job () {
     
     # Submit job to Slurm and log the job ID and command
-    # jobid=$(sbatch --parsable "$@")
-    # echo "$jobid : $*" >> $LOGDIR/jobids.log
-    # echo "$jobid : $*" >> logs/joblogs/jobids_$(date +%Y-%m-%d).log
-    # echo $jobid
+    jobid=$(sbatch --parsable "$@")
+    echo "$jobid : $*" >> $LOGDIR/jobids.log
+    echo "$jobid : $*" >> logs/joblogs/jobids_$(date +%Y-%m-%d).log
+    echo $jobid
 
     # Dry run
     # echo "[DRY RUN] sbatch args: $*"
 
-    # Run script directly (for debugging). Ignore the Slurm args and just run the script with its arguments (ie. ignore everything before "scripts/" and keep everything after)
-    # Extract the part of the command after "scripts/" and run it "bash ..."
-    cmd=$(echo "$@" | sed -n 's/.*\(scripts\/.*\).*/\1/p')
-    eval "bash $cmd"
+    # Run script directly (for debugging). Ignore the Slurm args and just run the script with its arguments.
+    # cmd=$(echo "$@" | sed -n 's/.*\(scripts\/.*\).*/\1/p')
+    # eval "bash $cmd"
 }
 
 if [ "$subset" == "experts" ]; then

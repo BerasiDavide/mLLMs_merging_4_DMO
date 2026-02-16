@@ -1,10 +1,7 @@
 import argparse
 import os
 import numpy as np
-import json
 
-from math import floor
-from tqdm import tqdm
 from itertools import product
 
 
@@ -16,7 +13,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--task-train-size", type=int, default=102400)
     parser.add_argument("--eval-size", type=int, default=0)
-    #parser.add_argument("--output-folder", type=str, default="configs/datamixtures_configs/exp_small")
     parser.add_argument("--ntasks", type=int, default=4)
     parser.add_argument("--nsteps", type=int, default=8)
     parser.add_argument("--seed", type=int, default=42)
@@ -46,7 +42,7 @@ if __name__ == "__main__":
             mixture_ratios_list[i] = r
         print(f"Created random sampling of {len(mixture_ratios_list)} mixtures from Dirichlet distribution")
 
-    
+    # Print the mixture ratios
     for r in mixture_ratios_list:    # ex: '0.125,0.125,0.75'
         print("\"" + ','.join(map(str, r)) + "\"")
 

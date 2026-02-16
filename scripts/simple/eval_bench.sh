@@ -50,4 +50,5 @@ python -m lmms_eval \
     --model_args model=${MODEL_PATH},gpu_memory_utilization=0.85 \
     --tasks ${BENCHMARK} \
     --batch_size 4 --log_samples --log_samples_suffix vllm --output_path ${OUTPUT_PATH} \
-    --limit 16
+
+#--limit 16

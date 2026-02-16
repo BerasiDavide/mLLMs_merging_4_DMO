@@ -1,8 +1,0 @@
-{
-    "tallyqa_250k_train": 30577,
-    "geo_170k_train": 30577,
-    "raven_42k_train": 30576,
-    "geomverse_9k_train": 8803,
-    "mathvision_3k_train": 2844,
-    "intergps_1k_train": 1023
-}

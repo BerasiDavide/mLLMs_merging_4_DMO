@@ -12,7 +12,8 @@ Linear Model Merging Unlocks Simple and Scalable Multimodal Data Mixture Optimiz
 <h2 align="center">
 
 [![arXiv](https://img.shields.io/badge/arXiv-2602.04937-b31b1b.svg)](https://www.arxiv.org/pdf/2602.04937)
-[![🤗 Model (HuggingFace)](https://img.shields.io/badge/Model-HuggingFace-FFD21E.svg?logo=huggingface&logoColor=yellow)](https://huggingface.co/collections/daviBera/mllms-merging-4-dmo)
+[![🤗 Model (HuggingFace)](https://img.shields.io/badge/Models-HuggingFace-FFD21E.svg?logo=huggingface&logoColor=yellow)](https://huggingface.co/collections/daviBera/mllms-merging-4-dmo)
+[![🤗 Dataset (HuggingFace)](https://img.shields.io/badge/Datasets-HuggingFace-FFD21E.svg?logo=huggingface&logoColor=yellow)](https://huggingface.co/datasets/daviBera/experts_datasets-102400)
 
 </h2>
 
@@ -26,20 +27,18 @@ This repo contains the official implementation of our paper: [Linear Model Mergi
 
 **TL;DR:**
 We study model merging as an efficient proxy for Data Mixture Optimization (DMO) in multimodal LLM supervised fine-tuning.
-Instead of training models on many data mixtures, we merge domain-specific experts and use merged models to estimate mixture performance.
+<!-- Instead of training models on many data mixtures, we merge domain-specific experts and use merged models to estimate mixture performance. -->
 
 ### Training and Evaluation
 We use [LLamaFactory](https://github.com/hiyouga/LlamaFactory) for training and [lmms-eval](https://github.com/EvolvingLMMs-Lab/lmms-eval) for evaluation. We consider base models from the `Qwen2-VL` and `Intern3.5-VL` families.
 
 ### Available models
-We release **>200** trained checkpoints on 🤗 [Huggingface](https://huggingface.co/collections/daviBera/mllms-merging-4-dmo). (Not all available yet)
-
-We evaluate 7+21+20=48 different data mixtures of 100k samples:
+We release **>150** trained checkpoints on 🤗 [Huggingface](https://huggingface.co/collections/daviBera/mllms-merging-4-dmo).
+These are mixture-finetuned and domain-expert checkpoints of Qwen2-VL-2B, Qwen2-VL-7B, InternVL3_5-2B, InternVL3_5-8B. 
+In particular, we consider:
 - 7 two-domains mixtures (GeneralVQA + OCR)
 - 21 three-domains mixtures (GeneralVQA + OCR + Counting)
 - 20 four-domains mixtures (GeneralVQA + OCR + Counting + Chart)
-
-The corresponding mixture-finetuned models and the domain-experts are available for: Qwen2-VL-2B, Qwen2-VL-7B, InternVL3_5-2B, InternVL3_5-8B.
 
 ### 🚀 Progress:
 
@@ -47,8 +46,7 @@ The corresponding mixture-finetuned models and the domain-experts are available 
 - [x] Add merging script
 - [x] Add evaluation scripts
 - [ ] Add script to print results
-- [ ] Upload datasets on HF hub
-- [ ] Add scripts for data preparation
+- [x] Upload datasets on HF hub
 - [x] Add training scripts (experts, mixture-sft)
 
 
@@ -138,3 +136,33 @@ bash scripts/simple/eval_bench.sh $model_path $benchmark $output_folder
 ```
 bash scripts/job_launchers/launch_eval_bench.sh
 ```
+
+# 🔥​ Reproduce training
+
+### 📚 Data preparation
+- Every dataset has to be specified in `LLaMA-Factory/data/dataset_info.json`. See the [LLaMA-Factory docs](https://github.com/hiyouga/LlamaFactory/blob/main/data/README.md) for more information.
+- You can download our domain-specific jsonl datasets with:
+```
+hf download --repo-type dataset daviBera/experts_datasets-102400 --local-dir "LLaMA-Factory/data/jsonl_mixtures"
+```
+- The images we use are included in [Cambrian-10M](https://huggingface.co/datasets/nyu-visionx/Cambrian-10M). We position all image folders in `LLaMA-Factory/data/image_datasets`. 
+
+### ▶️ Run training
+Note: modify the the *'Load Environment'* commands in the training scripts in `scripts/simple/` to use them as Slurm scripts.
+- Train domain-experts:
+```
+bash scripts/experts/train_expert.sh "qwen2_2b" "general"
+bash scripts/experts/train_expert.sh "qwen2_2b" "ocr"
+bash scripts/experts/train_expert.sh "qwen2_2b" "counting"
+bash scripts/experts/train_expert.sh "qwen2_2b" "chart"
+```
+- Train mixture-finetuned models on first mixing ratio:
+```
+export SLURM_ARRAY_TASK_ID=0
+bash scripts/mixed2/train_mixed2.sh "qwen2_2b" "general" "ocr"
+```
+Or train for all mixing ratios with a Slurm job-array:
+```
+sbatch scripts/mixed2/train_mixed2.sh "qwen2_2b" "general" "ocr"
+```
+
