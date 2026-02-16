@@ -136,6 +136,7 @@ bash scripts/simple/eval_bench.sh $model_path $benchmark $output_folder
 ```
 bash scripts/job_launchers/launch_eval_bench.sh
 ```
+- 
 
 # 🔥​ Reproduce training
 
@@ -164,5 +165,16 @@ bash scripts/mixed2/train_mixed2.sh "qwen2_2b" "general" "ocr"
 Or train for all mixing ratios with a Slurm job-array:
 ```
 sbatch scripts/mixed2/train_mixed2.sh "qwen2_2b" "general" "ocr"
+```
+
+## Citation
+Please cite this work as follows if you find it useful!
+```bibtex
+@article{berasi2026linear,
+  title={Linear Model Merging Unlocks Simple and Scalable Multimodal Data Mixture Optimization},
+  author={Berasi, Davide and Farina, Matteo and Mancini, Massimiliano and Ricci, Elisa},
+  journal={arXiv preprint arXiv:2602.04937},
+  year={2026}
+}
 ```
 
