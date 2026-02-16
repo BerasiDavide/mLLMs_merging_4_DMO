@@ -27,10 +27,10 @@ This repo contains the official implementation of our paper: [Linear Model Mergi
 
 **TL;DR:**
 We study model merging as an efficient proxy for Data Mixture Optimization (DMO) in multimodal LLM supervised fine-tuning.
-<!-- Instead of training models on many data mixtures, we merge domain-specific experts and use merged models to estimate mixture performance. -->
+Instead of training models on many data mixtures, we merge domain-specific experts and use merged models to estimate mixture performance.
 
 ### Training and Evaluation
-We use [LLamaFactory](https://github.com/hiyouga/LlamaFactory) for training and [lmms-eval](https://github.com/EvolvingLMMs-Lab/lmms-eval) for evaluation. We consider base models from the `Qwen2-VL` and `Intern3.5-VL` families.
+We use [LLamaFactory](https://github.com/hiyouga/LlamaFactory) for training and [lmms-eval](https://github.com/EvolvingLMMs-Lab/lmms-eval) for evaluation.
 
 ### Available models
 We release **>150** trained checkpoints on 🤗 [Huggingface](https://huggingface.co/collections/daviBera/mllms-merging-4-dmo).
@@ -39,16 +39,6 @@ In particular, we consider:
 - 7 two-domains mixtures (GeneralVQA + OCR)
 - 21 three-domains mixtures (GeneralVQA + OCR + Counting)
 - 20 four-domains mixtures (GeneralVQA + OCR + Counting + Chart)
-
-### 🚀 Progress:
-
-- [x] Upload models on HF hub (experts, mixture-sft)
-- [x] Add merging script
-- [x] Add evaluation scripts
-- [ ] Add script to print results
-- [x] Upload datasets on HF hub
-- [x] Add training scripts (experts, mixture-sft)
-
 
 # ⚙️ Setup
 
@@ -63,10 +53,11 @@ conda create -n merge4DMO python=3.10
 conda activate merge4DMO
 cd LLaMA-Factory
 pip install -e ".[torch,metrics,vllm]" --no-build-isolation
+pip install timm
 cd ..
 ```
 
-# 📦 Model preparation
+# 🤖 Model preparation
 > Note: Trained (or downloaded) LoRA adapters are then exported into full models. 
 
 <details>
@@ -95,8 +86,7 @@ bash scripts/merged2/merge_merged2.sh "qwen2_2b" "general" "ocr"
 # bash scripts/merged3/merge_merged3.sh "qwen2_2b" "counting" "general" "ocr"
 # bash scripts/merged4/merge_merged4.sh "qwen2_2b" "chart" "counting" "general" "ocr"
 ```
-> [!TIP]
-> If merging models sequentially is too slow, you can check `scripts/merged4/merge_merged4_array.sh` to merge different models with a batch of SLURM jobs.
+> **Tip:** You can check `scripts/merged4/merge_merged4_array.sh` to run a batch of Slurm jobs merging across mixing weights.
 
 4. Download and prepare mixture-finetuned models:
 ```
@@ -136,7 +126,10 @@ bash scripts/simple/eval_bench.sh $model_path $benchmark $output_folder
 ```
 bash scripts/job_launchers/launch_eval_bench.sh
 ```
-- 
+- Print results:
+```
+python -m utils.print_results --model "qwen2_2b"
+```
 
 # 🔥​ Reproduce training
 
@@ -149,7 +142,7 @@ hf download --repo-type dataset daviBera/experts_datasets-102400 --local-dir "LL
 - The images we use are included in [Cambrian-10M](https://huggingface.co/datasets/nyu-visionx/Cambrian-10M). We position all image folders in `LLaMA-Factory/data/image_datasets`. 
 
 ### ▶️ Run training
-Note: modify the the *'Load Environment'* commands in the training scripts in `scripts/simple/` to use them as Slurm scripts.
+Note: you may need to modify the the *'Load Environment'* commands in the training scripts in `scripts/simple/` to use them as Slurm scripts.
 - Train domain-experts:
 ```
 bash scripts/experts/train_expert.sh "qwen2_2b" "general"
@@ -162,10 +155,19 @@ bash scripts/experts/train_expert.sh "qwen2_2b" "chart"
 export SLURM_ARRAY_TASK_ID=0
 bash scripts/mixed2/train_mixed2.sh "qwen2_2b" "general" "ocr"
 ```
-Or train for all mixing ratios with a Slurm job-array:
+- Or launch a batch of Slurm jobs training for all mixing ratios:
 ```
 sbatch scripts/mixed2/train_mixed2.sh "qwen2_2b" "general" "ocr"
 ```
+
+<!-- ## 🚀 Progress:
+
+- [x] Upload models on HF hub (experts, mixture-sft)
+- [x] Add merging script
+- [x] Add evaluation scripts
+- [x] Add script to print results
+- [x] Upload datasets on HF hub
+- [x] Add training scripts (experts, mixture-sft) -->
 
 ## Citation
 Please cite this work as follows if you find it useful!

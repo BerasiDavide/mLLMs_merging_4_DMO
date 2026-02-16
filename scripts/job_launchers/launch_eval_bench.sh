@@ -9,27 +9,28 @@
 #   - fine-tuning strategies
 #   - number of training steps (defining the training budget, budget=steps*128)
 
-subset=4domains # experts, 2domains, 3domains, 4domains
+subset=2domains # experts, 2domains, 3domains, 4domains
+is_slurm=0 # Whether to submit jobs to Slurm. If false, the script will just print the commands without submitting.
 
 BENCHMARKS=(
     gqa
-    # vqav2_val_lite
-    # vizwiz_vqa_val
-    # ok_vqa_val2014
-    # textvqa_val
-    # ocrbench
-    # docvqa_val
-    # infovqa_val
-    # cv_bench_2d
-    # pope
-    # chartqa
-    # mme
-    # vmcbench
-    # mmstar
+    vqav2_val_lite
+    vizwiz_vqa_val
+    ok_vqa_val2014
+    textvqa_val
+    ocrbench
+    docvqa_val
+    infovqa_val
+    cv_bench_2d
+    pope
+    chartqa
+    mme
+    vmcbench
+    mmstar
 )
 MODELS=(
-    qwen2_2b
-    #intern35_2b
+    #qwen2_2b
+    intern35_2b
     #qwen2_7b
     #intern35_8b
 )
@@ -54,6 +55,11 @@ MERGED_TYPE=merged
 BENCHMARKS_CSV=$(IFS=, ; echo "${BENCHMARKS[*]}")
 N=${#BENCHMARKS[@]}
 
+if [ "$is_slurm" -eq 1 ]; then
+    echo "Launching jobs to Slurm..."
+else
+    echo "*** Debug mode ***: printing commands without submitting to Slurm. Set is_slurm=1 to submit jobs to Slurm."
+fi
 # Ask user for confirmation
 printf "Launching eval jobs for: \nSubset: ${subset} \nModels: ${MODELS[*]} \nSFT strategies: ${SFT_STRATEGIES[*]} \nSteps: ${STEPS_LIST[*]} \nBenchmarks: ${BENCHMARKS_CSV} \nTimeLimit: ${timelimit} \n"
 read -p "Are you sure? (enter): " confirmation
@@ -62,19 +68,21 @@ if [[ $confirmation != "" ]]; then
 fi
 
 submit_job () {
-    
-    # Submit job to Slurm and log the job ID and command
-    jobid=$(sbatch --parsable "$@")
-    echo "$jobid : $*" >> $LOGDIR/jobids.log
-    echo "$jobid : $*" >> logs/joblogs/jobids_$(date +%Y-%m-%d).log
-    echo $jobid
+    if [ "$is_slurm" -eq 1 ]; then
+        #Submit job to Slurm and log the job ID and command
+        jobid=$(sbatch --parsable "$@")
+        echo "$jobid : $*" >> $LOGDIR/jobids.log
+        echo "$jobid : $*" >> logs/joblogs/jobids_$(date +%Y-%m-%d).log
+        echo $jobid
+    else
+        # Dry run
+        echo "[DRY RUN] sbatch $*"
 
-    # Dry run
-    # echo "[DRY RUN] sbatch args: $*"
+        ## Run script directly (for debugging). Ignore the Slurm args and just run the script with its arguments.
+        # cmd=$(echo "$@" | sed -n 's/.*\(scripts\/.*\).*/\1/p')
+        # eval "bash $cmd"
+    fi
 
-    # Run script directly (for debugging). Ignore the Slurm args and just run the script with its arguments.
-    # cmd=$(echo "$@" | sed -n 's/.*\(scripts\/.*\).*/\1/p')
-    # eval "bash $cmd"
 }
 
 if [ "$subset" == "experts" ]; then

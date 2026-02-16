@@ -9,7 +9,8 @@
 #   - fine-tuning strategies
 #   - number of training steps (defining the training budget, budget=steps*128)
 
-subset=experts # experts, 2domains, 3domains, 4domains
+subset=2domains # experts, 2domains, 3domains, 4domains
+is_slurm=0 # Whether to submit jobs to Slurm. If false, the script will just print the commands without submitting.
 
 MODELS=(
     qwen2_2b
@@ -31,9 +32,11 @@ timelimit="03:00:00"
 #timelimit="05:00:00"
 # ----------------------------------------------------------------------------------------------- #
 
-BENCHMARKS_CSV=$(IFS=, ; echo "${BENCHMARKS[*]}")
-N=${#BENCHMARKS[@]}
-
+if [ "$is_slurm" -eq 1 ]; then
+    echo "Launching jobs to Slurm..."
+else
+    echo "*** Debug mode ***: printing commands without submitting to Slurm. Set is_slurm=1 to submit jobs to Slurm."
+fi
 # Ask user for confirmation
 printf "Launching train jobs for: \nSubset: ${subset} \nModels: ${MODELS[*]} \nSFT strategies: ${SFT_STRATEGIES[*]} \nSteps: ${STEPS_LIST[*]} \nTimeLimit: ${timelimit} \n"
 read -p "Are you sure? (enter): " confirmation
@@ -42,13 +45,21 @@ if [[ $confirmation != "" ]]; then
 fi
 
 submit_job () {
-    jobid=$(sbatch --parsable "$@")
-    echo "$jobid : $*" >> $LOGDIR/jobids.log
-    echo "$jobid : $*" >> logs/joblogs/jobids_$(date +%Y-%m-%d).log
-    echo $jobid
+    if [ "$is_slurm" -eq 1 ]; then
+        #Submit job to Slurm and log the job ID and command
+        jobid=$(sbatch --parsable "$@")
+        echo "$jobid : $*" >> $LOGDIR/jobids.log
+        echo "$jobid : $*" >> logs/joblogs/jobids_$(date +%Y-%m-%d).log
+        echo $jobid
+    else
+        # Dry run
+        echo "[DRY RUN] sbatch $*"
 
-    # Dry run
-    # echo "[DRY RUN] sbatch args: $*"
+        ## Run script directly (for debugging). Ignore the Slurm args and just run the script with its arguments.
+        # cmd=$(echo "$@" | sed -n 's/.*\(scripts\/.*\).*/\1/p')
+        # eval "bash $cmd"
+    fi
+
 }
 
 if [ "$subset" == "experts" ]; then
@@ -106,7 +117,6 @@ elif [ "$subset" == "2domains" ]; then
                         -t ${timelimit} \
                         --output=$LOGDIR/train_mixed2/%A_%x/%A_%a_%x.out --error=$LOGDIR/train_mixed2/%A_%x/%A_%a_%x.err \
                         scripts/mixed2/train_mixed2.sh ${BASE_MODEL} ${DOM1} ${DOM2} ${SFT_STRATEGY} ${STEPS} ${MIXTURE_TRESHOLD} ${EXP_NAME}
-                    done
                     
                 done
                 
@@ -138,8 +148,6 @@ elif [ "$subset" == "3domains" ]; then
                         -t ${timelimit} \
                         --output=$LOGDIR/train_mixed3/%A_%x/%A_%a_%x.out --error=$LOGDIR/train_mixed3/%A_%x/%A_%a_%x.err \
                         scripts/mixed3/train_mixed3.sh ${BASE_MODEL} ${DOM1} ${DOM2} ${DOM3} ${SFT_STRATEGY} ${STEPS} ${MIXTURE_TRESHOLD} ${EXP_NAME}
-
-                    done
                     
                 done
                 
@@ -172,8 +180,6 @@ elif [ "$subset" == "4domains" ]; then
                         -t ${timelimit} \
                         --output=$LOGDIR/train_mixed4/%A_%x/%A_%a_%x.out --error=$LOGDIR/train_mixed4/%A_%x/%A_%a_%x.err \
                         scripts/mixed4/train_mixed4.sh ${BASE_MODEL} ${DOM1} ${DOM2} ${DOM3} ${DOM4} ${SFT_STRATEGY} ${STEPS} ${MIXTURE_TRESHOLD} ${EXP_NAME}
-
-                    done
                     
                 done
                 

@@ -51,9 +51,9 @@ if [[ $EVAL_DATASET != *"val"* ]]; then
 fi
 
 # === Load environment ===
-# module load cuda/12.2
-# source ${WORK}/miniconda3/etc/profile.d/conda.sh
-# conda activate merge4DMO
+module load cuda/12.2
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate merge4DMO
 
 # === Run the evaluation ===
 export WANDB_MODE="offline"

@@ -19,26 +19,26 @@ if [ "$export_models" == "true" ]; then
     ## To do this, we call the training scripts; if the exported model already exists, the script will skip the training and directly export the model.
 
     ## If you to export the models as a batch of SLURM jobs, sbatch the scripts directly.
-    # sbatch scripts/mixed2/train_mixed2.sh "qwen2_2b" "general" "ocr" ${sft_type} ${steps}
-    # sbatch scripts/mixed3/train_mixed3.sh "qwen2_2b" "counting" "general" "ocr" ${sft_type} ${steps}
-    # sbatch scripts/mixed4/train_mixed4.sh "qwen2_2b" "chart" "counting" "general" "ocr" ${sft_type} ${steps}
+    # sbatch scripts/mixed2/train_mixed2.sh $model "general" "ocr" ${sft_type} ${steps}
+    # sbatch scripts/mixed3/train_mixed3.sh $model "counting" "general" "ocr" ${sft_type} ${steps}
+    # sbatch scripts/mixed4/train_mixed4.sh $model "chart" "counting" "general" "ocr" ${sft_type} ${steps}
 
     ## Alternatively, you can run the training and exporting sequentially in a single script as below.
     echo "Exporting the 7 two-domains mixed models..."
     for i in {0..6}; do
         export SLURM_ARRAY_TASK_ID=$i
-        bash scripts/mixed2/train_mixed2.sh "qwen2_2b" "general" "ocr" ${sft_type} ${steps} ${exp_name}
+        bash scripts/mixed2/train_mixed2.sh $model "general" "ocr" ${sft_type} ${steps} ${exp_name}
     done
 
     echo "Exporting the 21 three-domains mixed models..."
     for i in {0..20}; do
         export SLURM_ARRAY_TASK_ID=$i
-        bash scripts/mixed3/train_mixed3.sh "qwen2_2b" "counting" "general" "ocr" ${sft_type} ${steps} ${exp_name}
+        bash scripts/mixed3/train_mixed3.sh $model "counting" "general" "ocr" ${sft_type} ${steps} ${exp_name}
     done
 
     echo "Exporting the 20 four-domains mixed models..."
     for i in {0..19}; do
         export SLURM_ARRAY_TASK_ID=$i
-        bash scripts/mixed4/train_mixed4.sh "qwen2_2b" "chart" "counting" "general" "ocr" ${sft_type} ${steps} ${exp_name}
+        bash scripts/mixed4/train_mixed4.sh $model "chart" "counting" "general" "ocr" ${sft_type} ${steps} ${exp_name}
     done
 fi

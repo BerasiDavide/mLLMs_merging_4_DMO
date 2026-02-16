@@ -33,9 +33,9 @@ echo "HF_HOME: $HF_HOME"
 echo "--------------------------------"
 
 # === Load environment ===
-# module load cuda/12.2
-# source ${WORK}/miniconda3/etc/profile.d/conda.sh
-# conda activate lmms_eval
+module load cuda/12.2
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate lmms_eval
 
 #export HF_HOME=${SCRATCH}/.cache/huggingface
 export WANDB_MODE="offline"

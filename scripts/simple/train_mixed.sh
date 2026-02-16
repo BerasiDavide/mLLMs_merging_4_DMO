@@ -32,9 +32,9 @@ echo Training with dataset: ${DATASET_NAME}
 echo Saving outputs to: ${OUTPUT_PATH}
 
 # === Load environment ===
-# module load cuda/12.2
-# source ${WORK}/miniconda3/etc/profile.d/conda.sh
-# conda activate merge4DMO
+module load cuda/12.2
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate merge4DMO
 
 # === Run the training ===
 export WANDB_MODE="offline"

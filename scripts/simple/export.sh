@@ -38,7 +38,8 @@ echo "Exported path: ${EXPORTED_PATH}"
 echo "--------------------------------"
 
 
-# source ${WORK}/miniconda3/etc/profile.d/conda.sh
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate merge4DMO
 export WANDB_MODE="offline"
 
 # === Fix QwenVL chat template mismatch ===
@@ -54,7 +55,6 @@ fi
 if [ -f "${ADAPTER_PATH}/adapter_config.json" ]; then
     echo "Exporting LoRA adapter to full model format"
     cd LLaMA-Factory
-    conda activate merge4DMO
     llamafactory-cli export ../configs/export_configs/${CONFIG_NAME}.yaml \
         adapter_name_or_path=${ADAPTER_PATH} \
         export_dir=${EXPORTED_PATH}
@@ -67,7 +67,6 @@ fi
 
 # === Convert InternVL models from HF to custom format ===
 if [[ $CONFIG_NAME == *"intern"* ]]; then
-    conda activate lmms_eval
 
     if [[ $CONFIG_NAME == "intern35_2b"* ]]; then
         REFERENCE_PATH=checkpoints/base_models/InternVL3_5-2B-Pretrained
