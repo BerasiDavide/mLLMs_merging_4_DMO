@@ -17,7 +17,11 @@ OVERWRITE=${4:-false} # false to skip if results already exist
 OUTPUT_PATH=${OUTPUT_FOLDER}/${BENCHMARK}
 
 MODEL_PATH=$(realpath ${MODEL_PATH})
-
+# if model path does not exist, exit (without error)
+if [ ! -d "$MODEL_PATH" ]; then
+    echo "Error: Model path $MODEL_PATH does not exist."
+    exit 0
+fi
 
 # if output dir exists, skip
 if [ -d "$OUTPUT_PATH" ] && [ "$OVERWRITE" != "true" ]; then
@@ -50,5 +54,4 @@ python -m lmms_eval \
     --model_args model=${MODEL_PATH},gpu_memory_utilization=0.85 \
     --tasks ${BENCHMARK} \
     --batch_size 4 --log_samples --log_samples_suffix vllm --output_path ${OUTPUT_PATH} \
-
-#--limit 16
+    --limit 16

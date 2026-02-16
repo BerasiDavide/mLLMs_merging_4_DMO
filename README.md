@@ -142,7 +142,7 @@ hf download --repo-type dataset daviBera/experts_datasets-102400 --local-dir "LL
 - The images we use are included in [Cambrian-10M](https://huggingface.co/datasets/nyu-visionx/Cambrian-10M). We position all image folders in `LLaMA-Factory/data/image_datasets`. 
 
 ### ▶️ Run training
-Note: you may need to modify the the *'Load Environment'* commands in the training scripts in `scripts/simple/` to use them as Slurm scripts.
+> **Note**: You may need to modify the *'Load Environment'* commands in the training scripts in `scripts/simple/` to use them as Slurm scripts.
 - Train domain-experts:
 ```
 bash scripts/experts/train_expert.sh "qwen2_2b" "general"
